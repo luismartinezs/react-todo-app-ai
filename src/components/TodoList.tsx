@@ -1,33 +1,34 @@
-import React, { useState } from 'react';
-import styles from './TodoList.module.css';
-import TodoForm from './TodoForm';
-import TodoItem from './TodoItem';
-import { Todo, TodoListProps } from './TodoTypes';
+import React, { useState } from "react";
+import styles from "./TodoList.module.css";
+import TodoForm from "./TodoForm";
+import TodoItem from "./TodoItem";
+import {  TodoListProps } from "./TodoTypes";
+import { useTodos, useAddTodo, useUpdateTodo, useDeleteTodo } from "../api";
 
 const TodoList: React.FC<TodoListProps> = (props) => {
-  const [todos, setTodos] = useState(props.todos);
+  const { todos, isLoading, error } = useTodos();
+  const { addTodo } = useAddTodo();
+  const { updateTodo } = useUpdateTodo();
+  const { deleteTodo } = useDeleteTodo();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   const handleSubmit = (text: string) => {
-    setTodos((prevTodos) => {
-      const newTodo: Todo = {
-        id: prevTodos.length + 1,
-        text: text,
-        completed: false,
-      };
-      return [...prevTodos, newTodo];
-    });
+    addTodo(text);
   };
 
   const handleDelete = (id: number) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+    deleteTodo(id);
   };
 
   const handleComplete = (id: number) => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+    updateTodo({ id, completed: true, text: todos.find(todo => todo.id === id).text });
   };
 
   return (
