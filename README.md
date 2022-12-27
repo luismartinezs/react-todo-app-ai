@@ -16,7 +16,7 @@ To get started with the frontend, follow these steps:
 1. Clone the repository:
 
 ```
-git clone https://github.com/your-username/todo-app-frontend.git
+git clone https://github.com/luismartinezs/react-todo-app-ai.git
 ```
 
 2. Install the dependencies:
