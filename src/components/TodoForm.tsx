@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./TodoList.module.css";
 
 const TodoForm: React.FC<{ onSubmit: (text: string) => void }> = ({
   onSubmit,
@@ -16,9 +17,9 @@ const TodoForm: React.FC<{ onSubmit: (text: string) => void }> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input value={text} onChange={handleChange} />
-      <button type="submit">Add Todo</button>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <input value={text} onChange={handleChange} className={styles.formInput} />
+      <button type="submit" className={styles.formButton}>Add Todo</button>
     </form>
   );
 };

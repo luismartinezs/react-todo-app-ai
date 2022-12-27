@@ -1,27 +1,27 @@
-.todo-list {
+.todoList {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.todo-item {
+.todoItem {
   display: flex;
   align-items: center;
   padding: 16px;
   border-bottom: 1px solid #ccc;
 }
 
-.todo-item + .todo-item {
+.todoItem + .todoItem {
   margin-top: 16px;
 }
 
-.todo-text {
+.todoText {
   margin-left: 16px;
   font-size: 16px;
   color: #333;
 }
 
-.todo-checkbox {
+.todoCheckbox {
   appearance: none;
   display: inline-block;
   width: 20px;
@@ -29,33 +29,100 @@
   border: 1px solid #ccc;
   border-radius: 2px;
   margin-right: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
 }
 
-.todo-checkbox:checked {
-  background-color: #007bff;
+.todoCheckbox:hover {
+  border-color: #5dade2;
 }
 
-.todo-checkbox:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+.todoCheckbox:checked {
+  background-color: #3498db;
+  border-color: #3498db;
 }
 
-.todo-button {
+.todoCheckbox:checked::after {
+  content: "";
+  display: block;
+  position: relative;
+  top: 2px;
+  left: 6px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.todoButton {
   appearance: none;
   border: none;
   background-color: transparent;
-  color: #007bff;
+  color: #3498db;
   font-size: 16px;
   cursor: pointer;
   margin-left: 16px;
+  font-family: sans-serif;
+  transition: color 0.2s ease;
 }
 
-.todo-button:focus {
-  outline: none;
+.todoButton:hover {
+  color: #5dade2;
+}
+
+.todoButton:active {
+  color: #2980b9;
 }
 
 .errorMessage {
   color: red;
   font-weight: bold;
   margin: 1em 0;
+}
+
+/* TodoForm */
+
+.form {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.formInput {
+  flex: 1;
+  font-size: 1em;
+  border: 2px solid #5dade2;
+  border-radius: 5px;
+  outline: none;
+  margin-right: 0.5em;
+  font-family: sans-serif;
+  transition: border-color 0.2s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  padding: 0.4em 1em;
+}
+
+.formInput:focus {
+  border-color: #2e86c1;
+}
+
+.formButton {
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: white;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  font-family: sans-serif;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.formButton:hover {
+  background-color: #5dade2;
+}
+
+.formButton:active {
+  background-color: #2e86c1;
 }
