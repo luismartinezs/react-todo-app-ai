@@ -53,3 +53,9 @@
 .todo-button:focus {
   outline: none;
 }
+
+.errorMessage {
+  color: red;
+  font-weight: bold;
+  margin: 1em 0;
+}

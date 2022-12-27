@@ -1,34 +1,67 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./TodoList.module.css";
 import TodoForm from "./TodoForm";
 import TodoItem from "./TodoItem";
-import {  TodoListProps } from "./TodoTypes";
+import { Todo, TodoListProps } from "./TodoTypes";
 import { useTodos, useAddTodo, useUpdateTodo, useDeleteTodo } from "../api";
 
-const TodoList: React.FC<TodoListProps> = (props) => {
-  const { todos, isLoading, error } = useTodos();
-  const { addTodo } = useAddTodo();
-  const { updateTodo } = useUpdateTodo();
-  const { deleteTodo } = useDeleteTodo();
+function getTodoById(id: string, todos: Todo[]): Todo | null {
+  const todo = todos.find((t) => t.id === id);
+  return todo || null;
+}
 
-  if (isLoading) {
+const TodoList: React.FC<TodoListProps> = (props) => {
+  const { todos, isLoading: isTodosLoading, error: todosError } = useTodos();
+  const {
+    addTodo,
+    isLoading: isAddingTodo,
+    error: addTodoError,
+  } = useAddTodo();
+  const {
+    updateTodo,
+    isLoading: isUpdatingTodo,
+    error: updateTodoError,
+  } = useUpdateTodo();
+  const {
+    deleteTodo,
+    isLoading: isDeletingTodo,
+    error: deleteTodoError,
+  } = useDeleteTodo();
+
+  if (isTodosLoading || isAddingTodo || isUpdatingTodo || isDeletingTodo) {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
+  if (todosError || addTodoError || updateTodoError || deleteTodoError) {
+    return (
+      <div className={styles.errorMessage}>
+        Error:
+        {todosError ? ` ${todosError.message}` : ""}
+        {addTodoError ? ` ${addTodoError.message}` : ""}
+        {updateTodoError ? ` ${updateTodoError.message}` : ""}
+        {deleteTodoError ? ` ${deleteTodoError.message}` : ""}
+      </div>
+    );
   }
 
   const handleSubmit = (text: string) => {
     addTodo(text);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     deleteTodo(id);
   };
 
-  const handleComplete = (id: number) => {
-    updateTodo({ id, completed: true, text: todos.find(todo => todo.id === id).text });
+  const handleComplete = (id: string) => {
+    const todo = getTodoById(id, todos);
+    if (!todo) {
+      return;
+    }
+    updateTodo({
+      id,
+      completed: !todo.completed,
+      text: todo.text,
+    });
   };
 
   return (

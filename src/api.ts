@@ -2,10 +2,25 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import { Todo } from "./components/TodoTypes";
 
+const getTodos = () =>
+  axios.get("http://localhost:3000/api/todos").then((res) => res.data);
+
+const addTodo = (text: string) =>
+  axios
+    .post("http://localhost:3000/api/todos", { text })
+    .then((res) => res.data);
+
+const updateTodo = (todo: Partial<Todo> & { id: string }) => {
+  return axios
+    .put(`http://localhost:3000/api/todos/${todo.id}`, todo)
+    .then((res) => res.data);
+}
+
+const deleteTodo = (id: string) =>
+  axios.delete(`http://localhost:3000/api/todos/${id}`).then((res) => res.data);
+
 export const useTodos = () => {
-  const { data, isLoading, error } = useQuery("todos", () =>
-    axios.get("http://localhost:3000/api/todos").then((res) => res.data)
-  );
+  const { data, isLoading, error } = useQuery("todos", getTodos);
 
   return {
     todos: data,
@@ -13,11 +28,6 @@ export const useTodos = () => {
     error,
   };
 };
-
-const addTodo = (text: string) =>
-  axios
-    .post("http://localhost:3000/api/todos", { text })
-    .then((res) => res.data);
 
 export const useAddTodo = () => {
   const queryClient = useQueryClient();
@@ -35,11 +45,6 @@ export const useAddTodo = () => {
   };
 };
 
-const updateTodo = (todo: Partial<Todo> & { id: number }) =>
-  axios
-    .put(`http://localhost:3000/api/todos/${todo.id}`, todo)
-    .then((res) => res.data);
-
 export const useUpdateTodo = () => {
   const queryClient = useQueryClient();
 
@@ -54,9 +59,6 @@ export const useUpdateTodo = () => {
     error: mutation.error,
   };
 };
-
-const deleteTodo = (id: number) =>
-  axios.delete(`http://localhost:3000/api/todos/${id}`).then((res) => res.data);
 
 export const useDeleteTodo = () => {
   const queryClient = useQueryClient();
